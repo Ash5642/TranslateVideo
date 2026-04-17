@@ -1,5 +1,5 @@
 import boto3
-import json, os
+import json
 s3 = boto3.client('s3', region_name='ap-south-1', use_ssl=True)
 # Or using resources
 def upload(progress):
@@ -9,11 +9,11 @@ def upload(progress):
     
     upload_details = s3.upload_file(
         progress['video'], 
-        os.getenv("AWS_S3_ACCESS_POINT"), 
+        "home-test-zyh3wqj4xsrxqkhwczkmog3bonmpoaps3a-s3alias", 
         key
     )
     print(upload_details)
-    progress['s3_video'] = f"{os.getenv("AWS_S3_BUCKET_URL")}{key}"
+    progress['s3_video'] = f"https://ashutosh-misc.s3.ap-south-1.amazonaws.com/{key}"
     upload_faces(progress)
     return progress
 
@@ -38,7 +38,7 @@ def upload_faces(progress):
                 face_key = progress['dirs']['media_dir']+f"faces/{item.name}/{file.name}"
                 s3.upload_file(
                     file, 
-                    os.getenv("AWS_S3_ACCESS_POINT"), 
+                    "home-test-zyh3wqj4xsrxqkhwczkmog3bonmpoaps3a-s3alias", 
                     face_key
                 )
                 current_face['images'].append(face_key)
@@ -60,7 +60,7 @@ def upload_faces(progress):
         for image in face['images']:
             response = rekognition_client.index_faces(
                 CollectionId=collection_id,
-                Image={'S3Object': {'Bucket': os.getenv("AWS_S3_BUCKET"), 'Name': image}},
+                Image={'S3Object': {'Bucket': "ashutosh-misc", 'Name': image}},
                 ExternalImageId=face['name'], # Optional: Name to associate with the face
                 MaxFaces=1,
                 QualityFilter="AUTO", # Filters out low-quality faces

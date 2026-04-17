@@ -17,5 +17,4 @@ def split(progress):
         speaker_audio.export(progress['dirs']['speaker_spliced']+f"speaker_{speaker['speaker']}/combined.mp3", format="mp3")
         speaker['speaker_spliced'] = progress['dirs']['speaker_spliced']+f"speaker_{speaker['speaker']}/combined.mp3"
     with open(progress['files']['transcript'], mode="w") as transcript_file:
-        print(transcript)
         transcript_file.write(json.dumps(transcript, ensure_ascii=False))

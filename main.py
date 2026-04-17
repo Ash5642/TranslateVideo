@@ -1,5 +1,9 @@
 import sys, json, random, os, time, argparse
 import torch
+from dotenv import load_dotenv
+
+load_dotenv('vars.env')
+
 torch.cuda.empty_cache()
 
 
@@ -19,15 +23,14 @@ def update_progress():
 
 step_list = [
     "upload",
-    "faces",
-    #"audio_extract",
-    #"audio_split",
-    #"text_extract",
-    #"speaker_split",
-    #"translate",
-    
-    #"audio_generate",
-    #"audio_combine"
+    #"faces",
+    "audio_extract",
+    "audio_split",
+    "text_extract",
+    "speaker_split",
+    "translate",
+    "audio_generate",
+    "audio_combine"
 ]
 key = random.randint(0, 1000)
 progress = {
@@ -71,7 +74,7 @@ else:
     with open(progress_file_name, mode="w+") as prog_file:
         prog_file.write(json.dumps(progress))
     
-        
+extract_first = True      
 
 for step in step_list:
     if step not in progress['progress']:
@@ -99,14 +102,17 @@ for step in step_list:
                 if speech_to_text_complete:
                     print("transcript generated")
                     break
-                print(f"checking job status {progress['transcribe_job']}")
+                if extract_first:
+                    print(f"checking job status", end="")
+                else:
+                    print(".", end="")
                 time.sleep(1)
+            print("")
         if step == 'speaker_split':
             from pipeline import speaker_split
             speaker_split.split(progress)
         if step == "translate":
             from pipeline import translate
-            print("TRANSLATING")
             translate.translate_file(progress)
 
         if step == "audio_generate":

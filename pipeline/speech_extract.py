@@ -12,5 +12,5 @@ def extract_audio2(video_path, output_audio_path):
 
 def extract_audio(video_path, output_audio_path):
     import boto3
-    client = boto3.client('transcribe', region_name=aws_region, use_ssl=True)
+    client = boto3.client('transcribe', region_name="ap-south-1", use_ssl=True)
     

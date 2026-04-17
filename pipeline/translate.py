@@ -1,5 +1,5 @@
 
-import json, time
+import json, time, os
 
 
 aws_translate = None
@@ -34,7 +34,7 @@ def translate_translategemma(segment, source_language, target_language):
 
 def translate_aws(segment, source_language, target_language):
     import boto3
-    aws_translate = boto3.client(service_name='translate', region_name=aws_region, use_ssl=True)
+    aws_translate = boto3.client(service_name='translate', region_name="ap-south-1", use_ssl=True)
     result = aws_translate.translate_text(
         Text=segment['text'],         
         SourceLanguageCode="en", 
@@ -47,7 +47,7 @@ def translate_aws(segment, source_language, target_language):
 
 def translate_aws_batch(progress):
     import boto3
-    aws_translate = boto3.client(service_name='translate', region_name=aws_region, use_ssl=True)
+    aws_translate = boto3.client(service_name='translate', region_name="ap-south-1", use_ssl=True)
     response = aws_translate.start_text_translation_job(
         JobName='string',
         InputDataConfig={

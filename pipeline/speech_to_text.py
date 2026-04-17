@@ -46,7 +46,6 @@ def speech_to_text(progress):
             if item['type'] != 'punctuation' or item['alternatives'][0]['content'] not in ['?', '.', '!']:
                 if start_time == None:
                     start_time = item['start_time']
-                print(sentence)
                 if 'end_time' in item:
                     end_time = item['end_time']
             else:
